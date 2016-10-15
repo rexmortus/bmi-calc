@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Body Mass Index Calculator</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">BMI Calculator</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <!-- This row contains two columns, each column contains an input -->
+      <div class="row">
+        <div class="column col-md-6">
+          <input id="height" placeholder="Height" type="text" class="form-control input-lg"/>
+        </div>
+        <div class="column col-md-6">
+          <input id="weight" placeholder="Weight" type="text" class="form-control input-lg"/>
+        </div>
+      </div>
+
+      <!-- This row contains one column, with a button -->
+      <div class="row">
+        <div class="column col-md-12">
+          <br>
+          <button id="submit" class="btn btn-info btn-lg center-block">Calculate!</button>
+        </div>
+      </div>
+
+      <!-- This row contains one column, with a diagnosis -->
+      <div class="row">
+        <div class="column col-md-12">
+          <div id="diagnosis" class="alert">Your diagnosis will appear here!</div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <script>
+
+      // Step 1, SELECT (with a query) the button DOM element
+      var button = document.querySelector('#submit');
+
+      // Step 2, attach a click event listener to the button
+      button.addEventListener('click', function() {
+
+        // Step 3, get values that the user has entered
+				// (optional, if they haven't provided values, alert!)
+
+				var heightInput = document.querySelector('#height');
+				var weightInput = document.querySelector('#weight');
+
+				var heightValue = heightInput.value;
+				var weightValue = weightInput.value;
+
+				if (heightValue === '' || weightValue === '') {
+					// PROGRAM ENDS HERE
+					alert('Some fields were incomplete');
+				} else {
+
+					// Step 4, calculate the BMI
+					var result = weightValue / (heightValue * heightValue);
+
+					// Step 5, determine diagnosis
+					var diagnosisDictionary = {
+
+						underweight: {
+							message: 'You are underweight!',
+							class: 'alert-info',
+						},
+
+						normal: {
+							message: 'You are normal!',
+							class: 'alert-success',
+						},
+
+						overweight: {
+							message: 'You are overweight!',
+							class: 'alert-warning',
+						},
+
+						obese: {
+							message: 'You are obese!',
+							class: 'alert-danger',
+						}
+					};
+
+					var message;
+					var cssClass;
+
+					// testing for underweight
+					if (result < 18.5) {
+						message = diagnosisDictionary.underweight.message;
+						cssClass = diagnosisDictionary.underweight.class;
+					}
+
+					// testing for normal
+					else if (result >= 18.5 && result <= 24.9) {
+						message = diagnosisDictionary.normal.message;
+						cssClass = diagnosisDictionary.normal.class;
+					}
+
+					// testing for overweight
+					else if (result >= 25 && result <= 29.9) {
+						message = diagnosisDictionary.overweight.message;
+						cssClass = diagnosisDictionary.overweight.class;
+					}
+
+					// testing for obese
+					else if (result >= 30) {
+						message = diagnosisDictionary.obese.message;
+						cssClass = diagnosisDictionary.obese.class;
+					}
+
+					// Step 6, print this value into the DOM
+					var diagnosis = document.querySelector('#diagnosis');
+
+					diagnosis.className = 'alert';
+					diagnosis.classList.add(cssClass);
+
+					diagnosis.textContent = message;
+
+				}
+
+      });
+
+    </script>
+
+  </body>
+</html>
